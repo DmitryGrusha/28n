@@ -31,7 +31,6 @@ class Cabinet(Enum):
     FLO = "ФЛО"
     ECG = "ЭКГ"
 
-
     ClinicalUrineAnalysis = "Анализ мочи"
     CollectionBiomaterial = "Забор биоматериала"
     Mammography = "Маммография"

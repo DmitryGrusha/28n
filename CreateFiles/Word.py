@@ -16,8 +16,6 @@ def createWordA5(fullName: str, sex: str, birthday: str, age: str, job: str, pos
 
     section.top_margin = Inches(0.5 / 2.54)
     section.bottom_margin = Inches(0.5 / 2.54)
-    # section.left_margin = Inches(0.5 / 2.54)
-    # section.right_margin = Inches(0. / 2.54)
     section.left_margin = Inches(0.7)
     section.right_margin = Inches(0.7)
 

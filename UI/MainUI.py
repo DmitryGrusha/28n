@@ -25,14 +25,15 @@ def createData(input):
         print(f"Создание файла для пациента - {fullName}")
         birthday = user["Дата рождения:"]
         age = getAge(birthday)
-        sex = getCurrentSex(user["Пол:"])
+        sex = getSex(user["Пол:"])
         job = user["Место работы:"]
         position = user["Должность:"]
-        agePeriodization = getCurrentAgePeriodization(sex, age)
+        agePeriodization = getAgePeriodization(sex, age)
         p = user["Пункты вредности:"]
 
-        doctors = getUniqueDoctors(user["Пункты вредности:"], sex, cabinesNumbers)
-        cabinets = getUniqueCabinets(user["Пункты вредности:"], sex, agePeriodization, cabinesNumbers)
+        problems = definingPoints(user["Пункты вредности:"])
+        doctors = getUniqueDoctors(problems, sex, cabinesNumbers)
+        cabinets = getUniqueCabinets(problems, sex, agePeriodization, cabinesNumbers)
 
         date_only = birthday.strftime("%Y-%m-%d")
         createWordA5(fullName, sex.value, date_only, f'{age}', job, position, p, doctors, cabinets)
