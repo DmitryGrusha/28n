@@ -1,9 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 import pandas as pd
-
-from Handlers.MainHandlers import *
-from CreateFiles.Excel import *
+from Logic.DataHandlers import *
 from CreateFiles.Word import *
 
 
@@ -32,6 +30,7 @@ def createData(input):
         p = user["Пункты вредности:"]
 
         problems = definingPoints(user["Пункты вредности:"])
+
         doctors = getUniqueDoctors(problems, sex, cabinesNumbers)
         cabinets = getUniqueCabinets(problems, sex, agePeriodization, cabinesNumbers)
 

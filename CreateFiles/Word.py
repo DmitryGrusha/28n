@@ -5,6 +5,8 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
+from Logic.GlobalHandlers import *
+
 
 def createWordA5(fullName: str, sex: str, birthday: str, age: str, job: str, position: str, p: [str], doctors: {str}, cabinets: {str}):
     doc = Document()
@@ -69,6 +71,8 @@ def createWordA5(fullName: str, sex: str, birthday: str, age: str, job: str, pos
         specialties.append((name, value))
 
 
+    specialties = sort_specialties(specialties)
+    print(specialties)
 
     for i, (specialty, cabinet) in enumerate(specialties):
 
