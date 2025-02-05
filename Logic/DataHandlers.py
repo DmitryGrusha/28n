@@ -36,7 +36,7 @@ def getAgePeriodization(sex: Sex, age: int):
         return AgePeriodization.Male
 
     if sex == Sex.Female:
-        if age < 39:
+        if age < 40:
             return AgePeriodization.YoungFemale
         else:
             return AgePeriodization.OldFemale
