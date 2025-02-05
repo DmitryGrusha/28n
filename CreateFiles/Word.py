@@ -72,7 +72,6 @@ def createWordA5(fullName: str, sex: str, birthday: str, age: str, job: str, pos
 
 
     specialties = sort_specialties(specialties)
-    print(specialties)
 
     for i, (specialty, cabinet) in enumerate(specialties):
 
