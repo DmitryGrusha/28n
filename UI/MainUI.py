@@ -14,6 +14,28 @@ inputCheckmark = tk.Canvas
 inputSquare = inputCheckmark
 button3 = tk.Button
 
+from datetime import datetime
+
+
+def _parse_birthday(birthday):
+    if isinstance(birthday, str):
+        try:
+            return datetime.strptime(birthday, "%d.%m.%Y")
+        except ValueError:
+            try:
+                return datetime.strptime(birthday, "%Y-%m-%d %H:%M:%S")
+            except ValueError:
+                try:
+                    return datetime.strptime(birthday, "%Y-%m-%d")
+                except ValueError:
+                    raise ValueError(f"Неподдерживаемый формат даты: {birthday}")
+
+    elif isinstance(birthday, pd.Timestamp):
+        return birthday.to_pydatetime()
+
+    raise ValueError(f"Неподдерживаемый тип данных: {type(birthday)}")
+
+
 def createData(input):
     global inputValues
     allData = input.iloc
@@ -21,7 +43,9 @@ def createData(input):
     for user in allData:
         fullName = user["ФИО:"]
         print(f"Создание файла для пациента - {fullName}")
-        birthday = user["Дата рождения:"]
+
+        birthday = _parse_birthday(user["Дата рождения:"])
+
         age = getAge(birthday)
         sex = getSex(user["Пол:"])
         job = user["Место работы:"]
@@ -29,12 +53,12 @@ def createData(input):
         agePeriodization = getAgePeriodization(sex, age)
         p = user["Пункты вредности:"]
 
-        problems = definingPoints(user["Пункты вредности:"])
-
+        problems = definingPoints(p)
         doctors = getUniqueDoctors(problems, sex, cabinesNumbers)
         cabinets = getUniqueCabinets(problems, sex, agePeriodization, cabinesNumbers)
 
         date_only = birthday.strftime("%Y-%m-%d")
+
         createWordA5(fullName, sex.value, date_only, f'{age}', job, position, p, doctors, cabinets)
 
     inputCheckmark.itemconfig(cabinetsSquare, fill='red', outline='red')
@@ -52,7 +76,7 @@ def openFile():
     )
     if file_path:
         try:
-            input = pd.read_excel(file_path, engine='openpyxl')
+            input = pd.read_excel(file_path, engine='openpyxl', dtype=str)
             inputValues = input
             inputCheckmark.itemconfig(cabinetsSquare, fill='#90EE90', outline='#90EE90')
 

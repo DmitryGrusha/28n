@@ -5,9 +5,8 @@ import itertools
 
 
 def definingPoints(input: str) -> [Problem]:
-    splited_list = [s.strip() for s in str(input).split(',')]
+    splited_list = [s.strip() for s in input.split(',')]
     values = [item.replace(" ", "") for item in splited_list]
-
     result = []
     for item in Problem:
         for value in values:

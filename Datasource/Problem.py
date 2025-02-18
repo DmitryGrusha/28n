@@ -16,7 +16,7 @@ class Doctors(Enum):
     Otorhinolaryngologist = "ЛОР"
     Ophthalmologist = "Офтальмолог"
     Surgeon = "Хирург"
-    Dentist = "Cтоматолог"
+    Dentist = "Стоматолог"
 
     PsychiatristNarcology = "Психиатр-Нарколог"
     Neurologist = "Невролог"
@@ -260,11 +260,11 @@ class Problem(Enum):
     def __init__(self, value):
         self._value_ = value
 
-    def doctors(self, sex: Sex):
+    def doctors(self, sex: Sex) -> [Doctors]:
 
-        defaultDoctors = [Doctors.Dermatovenerologist, Doctors.Otorhinolaryngologist, Doctors.Ophthalmologist]
+        defaultDoctors: [Doctors] = [Doctors.Dermatovenerologist, Doctors.Otorhinolaryngologist, Doctors.Ophthalmologist]
 
-        list = {
+        problems_to_doctors = {
             Problem.a1_2: [Doctors.Surgeon],
             Problem.a1_3: [Doctors.Dermatovenerologist, Doctors.Ophthalmologist, Doctors.Surgeon],
             Problem.a1_4: [Doctors.Dermatovenerologist, Doctors.Otorhinolaryngologist],
@@ -369,78 +369,86 @@ class Problem(Enum):
             Problem.a27: [Doctors.Otorhinolaryngologist, Doctors.Dermatovenerologist, Doctors.Dentist],
         }
 
-        doctorsList = list.get(self, defaultDoctors)
+        problem_list: [Doctors] = problems_to_doctors.get(self)
+        if problem_list is None:
+            problem_list = []
 
-        defaultMale: List[Doctors] = [Doctors.PsychiatristNarcology, Doctors.Neurologist, Doctors.Therapist]
-        defaultFemale: List[Doctors] = [Doctors.ObstetricianGynecologist, Doctors.PsychiatristNarcology, Doctors.Neurologist, Doctors.Therapist]
+        doctors_list: [Doctors] = defaultDoctors + problem_list
+
+        defaultMale: [Doctors] = [Doctors.PsychiatristNarcology, Doctors.Neurologist, Doctors.Therapist]
+        defaultFemale: [Doctors] = [Doctors.ObstetricianGynecologist, Doctors.PsychiatristNarcology, Doctors.Neurologist, Doctors.Therapist]
 
         if sex == Sex.Male:
-            doctorsList = doctorsList + defaultMale
+            doctors_list.extend(defaultMale)
         else:
-            doctorsList = doctorsList + defaultFemale
+            doctors_list.extend(defaultFemale)
 
-        return doctorsList
+        return doctors_list
 
 
 
-    def cabinets(self, sex: Sex, age: AgePeriodization):
+    def cabinets(self, sex: Sex, age: AgePeriodization) -> [Cabinet]:
 
-        defaultCabinet = [Cabinet.BloodCollection, Cabinet.FLO, Cabinet.ECG, Cabinet.ClinicalUrineAnalysis]
+        defaultCabinet: [Cabinet] = [Cabinet.BloodCollection, Cabinet.FLO, Cabinet.ECG, Cabinet.ClinicalUrineAnalysis]
 
-        list = {
-            Problem.a1_27: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a1_27_1: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a1_27_2: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a1_36: defaultCabinet + [Cabinet.Ultrasound],
-            Problem.a1_36_1: defaultCabinet + [Cabinet.Ultrasound],
-            Problem.a1_36_2: defaultCabinet + [Cabinet.Ultrasound],
-            Problem.a1_36_3: defaultCabinet + [Cabinet.Ultrasound],
-            Problem.a1_50: defaultCabinet + [Cabinet.Ultrasound],
-            Problem.a2_4_2: defaultCabinet + [Cabinet.Ultrasound],
-            Problem.a4_1: defaultCabinet + [Cabinet.Ultrasound],
-            Problem.a4_3_1: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a4_3_2: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a4_4: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a4_5: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a4_6: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a4_8: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a4_10: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a6: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a6_1: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a6_2: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a7: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a8: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a9: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a10: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a11: defaultCabinet + [Cabinet.Ultrasound, Cabinet.Audiometry],
-            Problem.a11_1: defaultCabinet + [Cabinet.Ultrasound, Cabinet.Audiometry],
-            Problem.a11_2: defaultCabinet + [Cabinet.Ultrasound, Cabinet.Audiometry],
-            Problem.a11_3: defaultCabinet + [Cabinet.Ultrasound, Cabinet.Audiometry],
-            Problem.a11_4: defaultCabinet + [Cabinet.Ultrasound, Cabinet.Audiometry],
-            Problem.a12: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a13: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a14: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a15: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a16: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a17: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a18_1: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a18_2: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a22: defaultCabinet + [Cabinet.Audiometry],
-            Problem.a23: defaultCabinet + [Cabinet.CollectionBiomaterial],
-            Problem.a24: defaultCabinet + [Cabinet.CollectionBiomaterial],
-            Problem.a25: defaultCabinet + [Cabinet.CollectionBiomaterial],
-            Problem.a26: defaultCabinet + [Cabinet.CollectionBiomaterial],
-            Problem.a27: defaultCabinet + [Cabinet.CollectionBiomaterial]
+        problems_to_cabinets = {
+            Problem.a1_27: [Cabinet.Audiometry],
+            Problem.a1_27_1: [Cabinet.Audiometry],
+            Problem.a1_27_2: [Cabinet.Audiometry],
+            Problem.a1_36: [Cabinet.Ultrasound],
+            Problem.a1_36_1: [Cabinet.Ultrasound],
+            Problem.a1_36_2: [Cabinet.Ultrasound],
+            Problem.a1_36_3: [Cabinet.Ultrasound],
+            Problem.a1_50: [Cabinet.Ultrasound],
+            Problem.a2_4_2: [Cabinet.Ultrasound],
+            Problem.a4_1: [Cabinet.Ultrasound],
+            Problem.a4_3_1: [Cabinet.Audiometry],
+            Problem.a4_3_2: [Cabinet.Audiometry],
+            Problem.a4_4: [Cabinet.Audiometry],
+            Problem.a4_5: [Cabinet.Audiometry],
+            Problem.a4_6: [Cabinet.Audiometry],
+            Problem.a4_8: [Cabinet.Audiometry],
+            Problem.a4_10: [Cabinet.Audiometry],
+            Problem.a6: [Cabinet.Audiometry],
+            Problem.a6_1: [Cabinet.Audiometry],
+            Problem.a6_2: [Cabinet.Audiometry],
+            Problem.a7: [Cabinet.Audiometry],
+            Problem.a8: [Cabinet.Audiometry],
+            Problem.a9: [Cabinet.Audiometry],
+            Problem.a10: [Cabinet.Audiometry],
+            Problem.a11: [Cabinet.Ultrasound, Cabinet.Audiometry],
+            Problem.a11_1: [Cabinet.Ultrasound, Cabinet.Audiometry],
+            Problem.a11_2: [Cabinet.Ultrasound, Cabinet.Audiometry],
+            Problem.a11_3: [Cabinet.Ultrasound, Cabinet.Audiometry],
+            Problem.a11_4: [Cabinet.Ultrasound, Cabinet.Audiometry],
+            Problem.a12: [Cabinet.Audiometry],
+            Problem.a13: [Cabinet.Audiometry],
+            Problem.a14: [Cabinet.Audiometry],
+            Problem.a15: [Cabinet.Audiometry],
+            Problem.a16: [Cabinet.Audiometry],
+            Problem.a17: [Cabinet.Audiometry],
+            Problem.a18_1: [Cabinet.Audiometry],
+            Problem.a18_2: [Cabinet.Audiometry],
+            Problem.a22: [Cabinet.Audiometry],
+            Problem.a23: [Cabinet.CollectionBiomaterial],
+            Problem.a24: [Cabinet.CollectionBiomaterial],
+            Problem.a25: [Cabinet.CollectionBiomaterial],
+            Problem.a26: [Cabinet.CollectionBiomaterial],
+            Problem.a27: [Cabinet.CollectionBiomaterial]
         }
 
-        cabinetsList = list.get(self, defaultCabinet)
+        cabinets_problems_list: [Cabinet] = problems_to_cabinets.get(self)
+        if cabinets_problems_list is None:
+            cabinets_problems_list = []
 
-        defaultFemale: List[Cabinet] = [Cabinet.UltrasoundSmallTaz]
-        defaultOldFemale: List[Cabinet] = [Cabinet.Mammography]
+        cabinets_list: [Doctors] = defaultCabinet + cabinets_problems_list
+
+        defaultFemale: [Cabinet] = [Cabinet.UltrasoundSmallTaz]
+        defaultOldFemale: [Cabinet] = [Cabinet.Mammography]
 
         if sex == Sex.Female:
-            cabinetsList = cabinetsList + defaultFemale
+            cabinets_list.extend(defaultFemale)
             if age == AgePeriodization.OldFemale:
-                cabinetsList = cabinetsList + defaultOldFemale
+                cabinets_list.extend(defaultOldFemale)
 
-        return cabinetsList
+        return cabinets_list
