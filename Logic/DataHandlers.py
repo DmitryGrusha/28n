@@ -41,7 +41,16 @@ def getAgePeriodization(sex: Sex, age: int):
             return AgePeriodization.OldFemale
 
 
-def handleDoctors(problems: [Problem], sex: Sex, cabinetsDict: {}):
+
+def getUniqueDoctors(problems: [Problem], sex: Sex, cabinetsDict: {}):
+    return _handleDoctors(problems, sex, cabinetsDict)
+
+
+def getUniqueCabinets(problems: [Problem], sex: Sex, age: AgePeriodization, cabinetsDict: {}):
+    return _handleCabinets(problems, sex, age, cabinetsDict)
+
+
+def _handleDoctors(problems: [Problem], sex: Sex, cabinetsDict: {}):
     all = []
     for problem in problems:
         doctors = [doctor.value for doctor in problem.doctors(sex)]
@@ -57,11 +66,7 @@ def handleDoctors(problems: [Problem], sex: Sex, cabinetsDict: {}):
     return doctorsDict
 
 
-def getUniqueDoctors(problems: [Problem], sex: Sex, cabinetsDict: {}):
-    return handleDoctors(problems, sex, cabinetsDict)
-
-
-def handleCabinets(problems: [Problem], sex: Sex, age: AgePeriodization, cabinetsDict: {}):
+def _handleCabinets(problems: [Problem], sex: Sex, age: AgePeriodization, cabinetsDict: {}):
     all = []
     for problem in problems:
         cabinets = [cabinets.value for cabinets in problem.cabinets(sex, age)]
@@ -76,7 +81,3 @@ def handleCabinets(problems: [Problem], sex: Sex, age: AgePeriodization, cabinet
                 finalCabinetsDict[cabinet] = number
 
     return finalCabinetsDict
-
-
-def getUniqueCabinets(problems: [Problem], sex: Sex, age: AgePeriodization, cabinetsDict: {}):
-    return handleCabinets(problems, sex, age, cabinetsDict)
