@@ -261,7 +261,7 @@ class Problem(Enum):
 
     def doctors(self, sex: Sex) -> [Doctors]:
 
-        defaultDoctors: [Doctors] = [Doctors.Dermatovenerologist, Doctors.Otorhinolaryngologist, Doctors.Ophthalmologist]
+        defaultDoctors: [Doctors] = [Doctors.Therapist, Doctors.Neurologist, Doctors.PsychiatristNarcology]
 
         problems_to_doctors = {
             Problem.a1_2: [Doctors.Surgeon],
